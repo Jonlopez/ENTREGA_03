@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         crearBaseDatos();
         buscarContactos("");
+
     }
 
     public void crearBaseDatos(){
@@ -78,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void buscarContactos(String txtFiltro_nombre){
 
-
         String proyeccion[]={ContactsContract.Contacts._ID,
                 ContactsContract.Contacts.DISPLAY_NAME,
                 ContactsContract.Contacts.HAS_PHONE_NUMBER,
@@ -87,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         String args_filtro[]={"%"+txtFiltro_nombre+"%"};
-
-        List<String> lista_contactos=new ArrayList<String>();
 
         ContentResolver cr = getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
@@ -105,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
 
 //                    telefono = cur.getString(cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
-                    lista_contactos.add(name);
                 }
 
                 obj_contacto contacto = new obj_contacto(Integer.parseInt(id) , telefono, name);
@@ -116,14 +114,24 @@ public class MainActivity extends AppCompatActivity {
         }
         cur.close();
 
-        for (obj_contacto  curContacto : arrList_contactos ) {
-            Log.i ("ID de contaco -> ", curContacto.getcontacto_id().toString());
-            Log.i ("Nombre de contacto -> ", curContacto.getContacto_nombre());
-        }
+        llenarListView();
 
-        ListView l=(ListView)findViewById(R.id.lstContactos);
-        l.setAdapter(new ArrayAdapter<String>(this,R.layout.fila_lista, R.id.Itemname,lista_contactos));
+    }
 
+    public void llenarListView(){
+
+        Integer[] arrIdImagenes = {R.drawable.alien,R.drawable.alien};
+
+        ContactoListAdapter adapter=new ContactoListAdapter(this,arrList_contactos, arrIdImagenes);
+        ListView lista =(ListView)findViewById(R.id.lstContactos);
+        lista.setAdapter(adapter);
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                obj_contacto Slecteditem = arrList_contactos.get(+position);
+                Toast.makeText(getApplicationContext(), Slecteditem.getContacto_nombre(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }
