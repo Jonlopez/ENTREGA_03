@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
@@ -84,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
                 ContactsContract.Contacts._ID,
                 ContactsContract.Contacts.DISPLAY_NAME,
                 ContactsContract.CommonDataKinds.Phone.NUMBER,
-                ContactsContract.Contacts.PHOTO_URI
+                ContactsContract.Contacts.PHOTO_URI,
+                ContactsContract.CommonDataKinds.Event.START_DATE
         };
 
         String filtro=ContactsContract.Contacts.DISPLAY_NAME + " like ?";
@@ -105,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 contacto.setContacto_nombre(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
                 contacto.setContacto_telefono(cur.getString(cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
                 contacto.setContacto_foto(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.PHOTO_URI)));
+                contacto.setContacto_fNacimiento( getBDate(contacto.getContacto_id().toString()));
 
                 arrList_contactos.add(contacto);
 
@@ -114,6 +117,30 @@ public class MainActivity extends AppCompatActivity {
 
         llenarListView();
 
+    }
+
+    private String getBDate(String id) {
+        String bday = null;
+        ContentResolver cr = getContentResolver();
+        Uri uri = ContactsContract.Data.CONTENT_URI;
+        String[] projection = new String[] {
+                ContactsContract.Contacts.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Event.CONTACT_ID,
+                ContactsContract.CommonDataKinds.Event.START_DATE };
+        String where = ContactsContract.Data.MIMETYPE + "= ? AND "
+                + ContactsContract.CommonDataKinds.Event.TYPE + "="
+                + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY;
+        String[] selectionArgs = new String[] { ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE };
+        String sortOrder = null;
+        Cursor cur = cr.query(uri, projection, where, selectionArgs, sortOrder);
+        while (cur.moveToNext()) {
+            bday = cur
+                    .getString(cur
+                            .getColumnIndex(ContactsContract.CommonDataKinds.Event.START_DATE));
+            Log.v("Birthday", bday);
+        }
+        cur.close();
+        return bday;
     }
 
     public void llenarListView(){
