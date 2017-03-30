@@ -1,6 +1,7 @@
 package com.egibide.a8fprogmm09.happybirthdayjlg;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +20,12 @@ public class ContactoListAdapter extends ArrayAdapter<obj_contacto>{
     private final Activity context;
 
     private final ArrayList<obj_contacto> itemcontacto;
-    private final Integer[] integers;
 
-    public ContactoListAdapter(Activity context, ArrayList<obj_contacto> itemcontacto, Integer[] integers) {
+    public ContactoListAdapter(Activity context, ArrayList<obj_contacto> itemcontacto) {
         super(context, R.layout.fila_lista, itemcontacto);
         // TODO Auto-generated constructor stub
         this.context=context;
         this.itemcontacto=itemcontacto;
-        this.integers=integers;
     }
 
     public View getView(int posicion, View view, ViewGroup parent){
@@ -39,8 +38,11 @@ public class ContactoListAdapter extends ArrayAdapter<obj_contacto>{
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 
         txtTitle.setText(itemcontacto.get(posicion).getContacto_nombre());
-        etxDescripcion.setText("Description "+itemcontacto.get(posicion).getContacto_nombre());
-        imageView.setImageResource(integers[posicion]);
+        etxDescripcion.setText("telefóno "+itemcontacto.get(posicion).getContacto_telefono());
+        if(itemcontacto.get(posicion).getContacto_foto() != null)
+            imageView.setImageURI(Uri.parse(itemcontacto.get(posicion).getContacto_foto()));
+        else
+            imageView.setImageResource(R.drawable.alien);
 
 
         return rowView;

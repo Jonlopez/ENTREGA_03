@@ -10,31 +10,13 @@ public class obj_contacto {
     private String contacto_telefono;
     private String contacto_fNacimiento;
     private String contacto_nombre;
+    private String contacto_foto;
 
     private Character tipo_notificacion;
     private String mensaje_felicitacion;
 
-    public obj_contacto(Integer contacto_id, String contacto_telefono, String contacto_fNacimiento, String contacto_nombre, Character tipo_notificacion, String mensaje_felicitacion) {
-        this.contacto_id = contacto_id;
-        this.contacto_telefono = contacto_telefono;
-        this.contacto_fNacimiento = contacto_fNacimiento;
-        this.contacto_nombre = contacto_nombre;
-        this.tipo_notificacion = tipo_notificacion;
-        this.mensaje_felicitacion = mensaje_felicitacion;
-    }
+    public obj_contacto() {
 
-    public obj_contacto(Integer contacto_id, String contacto_telefono, String contacto_nombre) {
-        this.contacto_id = contacto_id;
-        this.contacto_telefono = contacto_telefono;
-        this.contacto_nombre = contacto_nombre;
-    }
-
-    public Integer getcontacto_id() {
-        return contacto_id;
-    }
-
-    public void setcontacto_id(Integer contacto_id) {
-        this.contacto_id = contacto_id;
     }
 
     public String getContacto_telefono() {
@@ -75,6 +57,22 @@ public class obj_contacto {
 
     public void setMensaje_felicitacion(String mensaje_felicitacion) {
         this.mensaje_felicitacion = mensaje_felicitacion;
+    }
+
+    public Integer getContacto_id() {
+        return contacto_id;
+    }
+
+    public void setContacto_id(Integer contacto_id) {
+        this.contacto_id = contacto_id;
+    }
+
+    public String getContacto_foto() {
+        return contacto_foto;
+    }
+
+    public void setContacto_foto(String contacto_foto) {
+        this.contacto_foto = contacto_foto;
     }
 }
 

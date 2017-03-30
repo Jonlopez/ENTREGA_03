@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void addContacto(obj_contacto curContacto){
 
-        db.execSQL("INSERT INTO MisCumples VALUES (" + curContacto.getcontacto_id() + ",'" + curContacto.getTipo_notificacion() + "'," +
+        db.execSQL("INSERT INTO MisCumples VALUES (" + curContacto.getContacto_id() + ",'" + curContacto.getTipo_notificacion() + "'," +
                 "'" + curContacto.getContacto_telefono() + "', '" + curContacto.getContacto_fNacimiento() + "'," +
                 "'" + curContacto.getContacto_nombre()+ "')");
 
@@ -80,33 +80,31 @@ public class MainActivity extends AppCompatActivity {
 
     public void buscarContactos(String txtFiltro_nombre){
 
-        String proyeccion[]={ContactsContract.Contacts._ID,
+        String proyeccion[]={
+                ContactsContract.Contacts._ID,
                 ContactsContract.Contacts.DISPLAY_NAME,
-                ContactsContract.Contacts.HAS_PHONE_NUMBER,
-                ContactsContract.Contacts.PHOTO_ID};
+                ContactsContract.CommonDataKinds.Phone.NUMBER,
+                ContactsContract.Contacts.PHOTO_URI
+        };
+
         String filtro=ContactsContract.Contacts.DISPLAY_NAME + " like ?";
 
 
         String args_filtro[]={"%"+txtFiltro_nombre+"%"};
 
         ContentResolver cr = getContentResolver();
-        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
+        Cursor cur = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 proyeccion, filtro, args_filtro, null);
+
         if (cur.getCount() > 0) {
             while (cur.moveToNext()) {
-                String id = cur.getString( cur.getColumnIndex(ContactsContract.Contacts._ID) );
 
-                String name = cur.getString( cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME) );
+                obj_contacto contacto = new obj_contacto();
 
-                String telefono = "";
-
-                if (Integer.parseInt(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
-
-//                    telefono = cur.getString(cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-
-                }
-
-                obj_contacto contacto = new obj_contacto(Integer.parseInt(id) , telefono, name);
+                contacto.setContacto_id(Integer.parseInt(cur.getString( cur.getColumnIndex(ContactsContract.Contacts._ID))));
+                contacto.setContacto_nombre(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
+                contacto.setContacto_telefono(cur.getString(cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+                contacto.setContacto_foto(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.PHOTO_URI)));
 
                 arrList_contactos.add(contacto);
 
@@ -119,10 +117,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void llenarListView(){
-
-        Integer[] arrIdImagenes = {R.drawable.alien,R.drawable.alien};
-
-        ContactoListAdapter adapter=new ContactoListAdapter(this,arrList_contactos, arrIdImagenes);
+        ContactoListAdapter adapter=new ContactoListAdapter(this,arrList_contactos);
         ListView lista =(ListView)findViewById(R.id.lstContactos);
         lista.setAdapter(adapter);
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
