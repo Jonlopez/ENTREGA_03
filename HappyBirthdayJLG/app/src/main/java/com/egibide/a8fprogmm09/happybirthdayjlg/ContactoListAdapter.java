@@ -33,12 +33,22 @@ public class ContactoListAdapter extends ArrayAdapter<obj_contacto>{
         LayoutInflater inflater=context.getLayoutInflater();
         View rowView=inflater.inflate(R.layout.fila_lista,null,true);
 
-        TextView txtTitle = (TextView) rowView.findViewById(R.id.texto_principal);
-        TextView etxDescripcion = (TextView) rowView.findViewById(R.id.texto_secundario);
+        TextView texto_nombre = (TextView) rowView.findViewById(R.id.texto_nombre);
+        TextView texto_telefono = (TextView) rowView.findViewById(R.id.texto_telefono);
+        TextView texto_nacimiento = (TextView) rowView.findViewById(R.id.texto_nacimiento);
+        TextView texto_notificacion = (TextView) rowView.findViewById(R.id.texto_notificacion);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 
-        txtTitle.setText(itemcontacto.get(posicion).getContacto_nombre());
-        etxDescripcion.setText("telefóno "+itemcontacto.get(posicion).getContacto_telefono());
+        texto_nombre.setText(itemcontacto.get(posicion).getContacto_nombre());
+        texto_telefono.setText("Nº telefóno : "+itemcontacto.get(posicion).getContacto_telefonos().get(0));
+        if(itemcontacto.get(posicion).getContacto_fNacimiento()!=null){
+            texto_nacimiento.setText("Nació el "+itemcontacto.get(posicion).getContacto_fNacimiento());
+            if(itemcontacto.get(posicion).getTipo_notificacion() != 'S' )
+                texto_notificacion.setText("Aviso: Sólo notificación");
+            else
+                texto_notificacion.setText("Aviso: Enviar SMS");
+        }
+
         if(itemcontacto.get(posicion).getContacto_foto() != null)
             imageView.setImageURI(Uri.parse(itemcontacto.get(posicion).getContacto_foto()));
         else

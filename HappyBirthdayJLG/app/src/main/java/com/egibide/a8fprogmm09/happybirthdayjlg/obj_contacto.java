@@ -1,30 +1,33 @@
 package com.egibide.a8fprogmm09.happybirthdayjlg;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * Created by 8fprogmm09 on 23/3/17.
  */
 
-public class obj_contacto {
+public class obj_contacto implements Serializable{
 
     private Integer contacto_id;
-    private String contacto_telefono;
+    private ArrayList<String> contacto_telefonos;
     private String contacto_fNacimiento;
     private String contacto_nombre;
     private String contacto_foto;
 
-    private Character tipo_notificacion;
-    private String mensaje_felicitacion;
+    private Character tipo_notificacion = 'N';
+    private String mensaje_felicitacion = "¡Zorionak!";
 
     public obj_contacto() {
 
     }
 
-    public String getContacto_telefono() {
-        return contacto_telefono;
+    public ArrayList<String> getContacto_telefonos() {
+        return contacto_telefonos;
     }
 
-    public void setContacto_telefono(String contacto_telefono) {
-        this.contacto_telefono = contacto_telefono;
+    public void setContacto_telefonos(ArrayList<String> contacto_telefonos) {
+        this.contacto_telefonos = contacto_telefonos;
     }
 
     public String getContacto_fNacimiento() {
