@@ -3,6 +3,7 @@ package com.egibide.a8fprogmm09.happybirthdayjlg;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -31,15 +32,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //crearBaseDatos();
-        //buscarContactos("");
+        crearBaseDatos();
+        buscarContactos("");
         ListarContactos();
 
         //Abrimos la base de datos 'DBUsuarios' en modo escritura
-        UsuariosSQLiteHelper usdbh =
-                new UsuariosSQLiteHelper(this, "DBUsuarios", null, 1);
+//        /UsuariosSQLiteHelper usdbh =
+//                new UsuariosSQLiteHelper(this, "DBUsuarios", null, 1);
 
-        db = usdbh.getWritableDatabase();
+//        db = usdbh.getWritableDatabase();
 
     }
 
@@ -260,9 +261,16 @@ public class MainActivity extends AppCompatActivity {
         lista.setAdapter(adapter);
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 obj_contacto Slecteditem = arrList_contactos.get(+position);
                 Toast.makeText(getApplicationContext(), Slecteditem.getContacto_nombre(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(v.getContext(), segundoActivity.class); startActivityForResult(intent, 0);
+                intent.putExtra("contacto_nombre", Slecteditem.getContacto_nombre());
+                intent.putExtra("contacto_telefono", Slecteditem.getContacto_telefonos().get(0));
+                intent.putExtra("contacto_fecha", Slecteditem.getContacto_fNacimiento());
+                intent.putExtra("contacto_felicitacion", Slecteditem.getMensaje_felicitacion());
+                startActivityForResult(intent, 0);
+
             }
         });
     }

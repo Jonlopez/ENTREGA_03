@@ -16,7 +16,7 @@ public class obj_contacto implements Serializable{
     private String contacto_foto;
 
     private Character tipo_notificacion = 'N';
-    private String mensaje_felicitacion = "¡Zorionak!";
+    private String mensaje_felicitacion = "¡Eres un grande, felidicades pasalo estupendo! =D";
 
     public obj_contacto() {
 
